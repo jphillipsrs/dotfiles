@@ -1,8 +1,11 @@
 return {
-	{
-		'nvim-telescope/telescope.nvim', tag = '0.1.5',
-		dependencies = { 'nvim-lua/plenary.nvim' },
-		config = function()
+    {
+        'nvim-telescope/telescope.nvim', tag = '0.1.5',
+        dependencies = {
+            { 'nvim-lua/plenary.nvim' },
+            { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' }
+        },
+        config = function()
 			local actions = require('telescope.actions')
 			local builtin = require('telescope.builtin')
 
@@ -32,6 +35,7 @@ return {
 						}
 					},
 					path_display = filenameFirst,
+                    file_ignore_patterns = {"node_modules", ".git", "target"}
 				},
 				pickers = {
 					find_files = {
@@ -40,7 +44,8 @@ return {
 				}
 			})
 
-			vim.keymap.set("n", "<leader>tt", function() builtin.find_files({ no_ignore = true }) end)
+			vim.keymap.set("n", "<leader>ff", function() builtin.find_files({ no_ignore = true }) end)
+            vim.keymap.set("n", "<leader>fa", '<cmd>Telescope live_grep<cr>', {noremap = true})
 			vim.keymap.set("n", "<leader>fu", function() builtin.lsp_references({ wrap_results = true }) end)
 			vim.keymap.set("n", "<leader>fi", function() builtin.lsp_implementations() end)
 		end

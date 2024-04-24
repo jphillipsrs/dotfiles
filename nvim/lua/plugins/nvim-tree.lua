@@ -82,10 +82,17 @@ return {
         config = function()
             require("nvim-tree").setup {}
 
+            update_focused_file = {
+                enabled = true,
+                update_cwd = true,
+            }
+
             local keymap = vim.keymap
 
             keymap.set("n", "<leader>tr", "<cmd>NvimTreeToggle<CR>", { desc = "Toggle file explorer" })
             keymap.set("n", "<leader>ft", "<cmd>lua toggle_nvim_tree_focus()<CR>", { desc = "Toggle file tree" })
+            keymap.set("n", "<leader>fl", ":NvimTreeFindFile<CR>", {noremap = true, silent = true})
+
 
             -- Move between nvim-tree windows
             keymap.set("n", "<C-w>", "<cmd>lua navigate_nvim_tree('k')<CR>", { noremap = true, silent = true })

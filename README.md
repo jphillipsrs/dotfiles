@@ -37,6 +37,8 @@
 
 `SPACE-tr` - Toggle tree
 
+`SPACE-fl` - Find Location of file in nvim-tree
+
 `CTRL-]` - Set NvimTree root to selected folder
 
 ### Nvim commands
@@ -57,7 +59,9 @@
 
 `CTRL-a` - Move to left window
 
-`SPACE-tt` - Telescope
+`SPACE-ff` - Find all files 
+
+`SPACE-fa` - Find all references
 
 `SPACE-fu` - Find usages
 
