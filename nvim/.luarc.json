@@ -1,0 +1,8 @@
+{
+    "diagnostics.globals": [
+        "vim",
+        "navigate_nvim_tree",
+        "select_file_in_nvim_tree",
+        "select_and_focus_file_in_nvim_tree"
+    ]
+}
