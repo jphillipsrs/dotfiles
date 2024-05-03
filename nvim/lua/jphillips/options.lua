@@ -12,13 +12,13 @@ vim.api.nvim_create_autocmd("VimEnter", {
 })
 
 -- Set tabs to 2 spaces
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
+vim.opt.tabstop = 2
+vim.opt.softtabstop = 2
 vim.opt.expandtab = true
 
--- Enable auto indenting and set it to spaces
+-- Enable auto indenting
 vim.opt.smartindent = true
-vim.opt.shiftwidth = 4
+vim.opt.shiftwidth = 2
 
 -- Enable smart indenting (see https://stackoverflow.com/questions/1204149/smart-wrap-in-vim)
 vim.opt.breakindent = true

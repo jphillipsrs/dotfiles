@@ -24,7 +24,7 @@ return {
 		"williamboman/mason-lspconfig.nvim",
 		config = function()
 			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "gopls", "rust_analyzer", "tsserver"}
+				ensure_installed = { "lua_ls", "gopls", "rust_analyzer", "tsserver", "eslint"}
 			})
 		end
     },
@@ -41,8 +41,13 @@ return {
                     null_ls.builtins.formatting.golines,
 
                     -- JavaScript
-                    null_ls.builtins.diagnostics.eslint,
                     null_ls.builtins.formatting.prettier,
+                    null_ls.builtins.diagnostics.eslint.with({
+                        filetypes = {"javascript", "typescript"}
+                    }),
+                    null_ls.builtins.code_actions.eslint.with({
+                        filetypes = {"javascript", "typescript"}
+                    }),
                 }
             })
 
