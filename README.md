@@ -21,6 +21,8 @@
 
 `CTRL-b !` - Move current pane to its own window
 
+`CTRL-b x` - Kill current pane
+
 ### NvimTree Commands
 
 `R` - Refresh files
@@ -66,3 +68,7 @@
 `SPACE-fu` - Find usages
 
 `SPACE-fi` - Find implementations
+
+`SPACE-gd` - Go to definition
+
+`SPACE-ef` - Float errors on new line

@@ -14,19 +14,64 @@ local function on_attach(client, bufnr)
 end
 
 return {
-	{
-		"williamboman/mason.nvim",
-		config = function()
-			require("mason").setup()
-		end
-	},
-	{
-		"williamboman/mason-lspconfig.nvim",
-		config = function()
-			require("mason-lspconfig").setup({
-				ensure_installed = { "lua_ls", "gopls", "rust_analyzer", "tsserver", "eslint"}
-			})
-		end
+    {
+        "williamboman/mason.nvim",
+        config = function()
+            require("mason").setup()
+        end
+    },
+    {
+        "williamboman/mason-lspconfig.nvim",
+        config = function()
+            require("mason-lspconfig").setup({
+                ensure_installed = { "lua_ls", "gopls", "rust_analyzer", "tsserver", "eslint", "jdtls" }
+            })
+        end
+    },
+    {
+        "mfussenegger/nvim-jdtls",
+        ft = { "java" },
+        config = function()
+            local jdtls = require("jdtls")
+            local home = os.getenv("HOME")
+            local workspace_folder = home .. "/.local/share/eclipse/" .. vim.fn.fnamemodify(vim.fn.getcwd(), ":p:h:t")
+
+            local config = {
+                cmd = {
+                    home .. "/.config/nvim/scripts/java-lsp.sh", workspace_folder
+                },
+                root_dir = require("jdtls.setup").find_root({".git", "mvnw", "gradlew"}),
+                settings = {
+                    java = {
+                        eclipse = {
+                            downloadSources = true,
+                        },
+                        configuration = {
+                            updateBuildConfiguration = "interactive",
+                        },
+                        maven = {
+                            downloadSources = true,
+                        },
+                        implementationsCodeLens = {
+                            enabled = true,
+                        },
+                        referencesCodeLens = {
+                            enabled = true,
+                        },
+                        references = {
+                            includeDecompiledSources = true,
+                        },
+                        format = {
+                            enabled = true,
+                        },
+                    },
+                },
+                on_attach = on_attach,
+                capabilities = require("cmp_nvim_lsp").default_capabilities(),
+            }
+
+            jdtls.start_or_attach(config)
+        end
     },
     {
         "jose-elias-alvarez/null-ls.nvim",
@@ -50,47 +95,53 @@ return {
                     }),
                 }
             })
-
-            -- Format on save
-            on_attach = on_attach
         end
     },
-	{
-		"neovim/nvim-lspconfig",
-		config = function()
-			local lspconfig = require("lspconfig")
-			require('lspconfig.ui.windows').default_options.border = 'rounded'
-			vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
-			vim.keymap.set('n', '<leader>fd', vim.lsp.buf.definition, {})
-			vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, {})
+    {
+        "neovim/nvim-lspconfig",
+        config = function()
+            local lspconfig = require("lspconfig")
+            local capabilities = require("cmp_nvim_lsp").default_capabilities()
 
-			-- Lua
-			lspconfig.lua_ls.setup({})
+            require('lspconfig.ui.windows').default_options.border = 'rounded'
+            vim.keymap.set('n', 'K', vim.lsp.buf.hover, {})
+            vim.keymap.set('n', '<leader>fd', vim.lsp.buf.definition, {})
+            vim.keymap.set({ 'n', 'v' }, '<leader>ca', vim.lsp.buf.code_action, {})
 
-			-- Go 
-			lspconfig.gopls.setup {
-				cmd = { "gopls", "serve" },
+            -- Lua
+            lspconfig.lua_ls.setup({})
+
+            -- Go 
+            lspconfig.gopls.setup {
+                cmd = { "gopls", "serve" },
                 on_attach = on_attach,
-				settings = {
-					gopls = {
-						completeUnimported = true,
-						usePlaceholders = true,
-						analyses = {
-							unusedparams = true,
-						},
-					},
-				},
-			}
+                settings = {
+                    gopls = {
+                        completeUnimported = true,
+                        usePlaceholders = true,
+                        analyses = {
+                            unusedparams = true,
+                        },
+                    },
+                },
+            }
 
-			-- Rust
+            -- Rust
             lspconfig.rust_analyzer.setup({})
 
             -- JavaScript
             lspconfig.tsserver.setup({
                 on_attach = on_attach,
+                capabilities = capabilities,
                 root_dir = lspconfig.util.root_pattern("package.json"),
             })
 
+            -- Java
+            lspconfig.jdtls.setup({
+                on_attach = on_attach,
+                capabilities = capabilities,
+            })
         end
     }
 }
+

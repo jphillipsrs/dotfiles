@@ -80,7 +80,27 @@ return {
             "nvim-tree/nvim-web-devicons",
         },
         config = function()
-            require("nvim-tree").setup {}
+            require("nvim-tree").setup {
+                renderer = {
+                    icons = {
+                        git_placement = "before",
+                        glyphs = {
+                            default = "",
+                            symlink = "",
+                            git = {
+                                unstaged = "",
+                                staged = "S",
+                                unmerged = "",
+                                renamed = "➜",
+                                untracked = "U",
+                                deleted = "D",
+                                ignored = "I",
+                            },
+                        },
+                    },
+                },
+        }
+
 
             update_focused_file = {
                 enabled = true,

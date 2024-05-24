@@ -11,17 +11,26 @@ vim.api.nvim_create_autocmd("VimEnter", {
   end,
 })
 
--- Set tabs to 2 spaces
+-- Set default indent to 2 spaces
 vim.opt.tabstop = 2
 vim.opt.softtabstop = 2
 vim.opt.expandtab = true
-
--- Enable auto indenting
-vim.opt.smartindent = true
 vim.opt.shiftwidth = 2
-
--- Enable smart indenting (see https://stackoverflow.com/questions/1204149/smart-wrap-in-vim)
+vim.opt.smartindent = true
 vim.opt.breakindent = true
+
+-- Define language-specific indents
+vim.api.nvim_create_augroup("LanguageSpecificIndents", { clear = true })
+vim.api.nvim_create_autocmd("FileType", {
+  group = "LanguageSpecificIndents",
+  pattern = { "javascript", "typescript" },
+  command = "setlocal shiftwidth=2 softtabstop=2 expandtab"
+})
+vim.api.nvim_create_autocmd("FileType", {
+  group = "LanguageSpecificIndents",
+  pattern = { "go", "lua" },
+  command = "setlocal shiftwidth=4 softtabstop=4 expandtab"
+})
 
 -- Enable incremental searching
 vim.opt.incsearch = true
